@@ -10,6 +10,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { Book } from '@tmo/shared/models';
 import { Subscription } from 'rxjs';
+import { UtilsService } from '../utils.service';
 
 @Component({
   selector: 'tmo-book-search',
@@ -18,7 +19,7 @@ import { Subscription } from 'rxjs';
 })
 export class BookSearchComponent implements OnInit,OnDestroy {
   books: ReadingListBook[];
-  subscriptions: Subscription = new Subscription();
+  subscriptions = new Subscription();
 
   searchForm = this.fb.group({
     term: ''
@@ -26,7 +27,8 @@ export class BookSearchComponent implements OnInit,OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private utilService: UtilsService
   ) {}
 
   get searchTerm(): string {
@@ -47,6 +49,7 @@ export class BookSearchComponent implements OnInit,OnDestroy {
 
   addBookToReadingList(book: Book) {
     this.store.dispatch(addToReadingList({ book }));
+    this.utilService.showSnackBar('Adding Book To Reading List', 'Undo');
   }
 
   searchExample() {
