@@ -8,6 +8,9 @@
       <div class="reading-list-item--details--author">
         {{ b.authors.join(',') }}
       </div>
+      <div *ngIf="b.finished">
+        <strong>Finished Date :</strong>{{ b.finishedDate | date:"MMM dd,yyyy 'at' hh:mma" }}
+      </div>
     </div>
     <div>
       <button
@@ -20,6 +23,17 @@
       >
         <mat-icon>remove_circle</mat-icon>
       </button>
+    </div>
+    <div>
+      <button
+        mat-button
+        [title]="b.finished ? 'Mark As Not Finished Reading' : 'Mark As Finished Reading'"
+        [attr.aria-label]="'Mark ' + b.title + (b.finished ? 'as Not Finished Reading' : 'as Finished Reading')"
+        (click)="markAsFinishedReading(b)"
+      >
+        <mat-icon data-testing="mark-book-finished" *ngIf="!b.finished">check_box_outline_blank</mat-icon>
+        <mat-icon data-testing="mark-book-not-finished" *ngIf="b.finished">check_box</mat-icon>
+      </button>    
     </div>
   </div>
 </ng-container>
